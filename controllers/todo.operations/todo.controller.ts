@@ -6,6 +6,17 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default class Todocontroller {
+  /**
+   *
+   * This function adds a todo
+   *
+   * @requires title
+   * @requires description
+   * @requires category
+   *
+   * @returns the created todo
+   */
+
   static addTodo = async (req, res) => {
     //Getting user and request body
     let user = req.user;
@@ -39,19 +50,24 @@ export default class Todocontroller {
     return okRes(res, task);
   };
 
+  /**
+   *
+   * This function adds a todo
+   *
+   * @requires todo's ID
+   *
+   *
+   */
+
   static removeTodo = async (req, res) => {
     let user = req.user;
-    let body = req.body;
-
-    //Validating request data
-    let notValid = validate(body, validator.removeTodo());
-    if (notValid) return errRes(res, notValid);
+    let todoId = parseInt(req.params.todoId);
 
     //check if todo exists and belongs to user
 
     let task = await prisma.todo.findFirst({
       where: {
-        id: body.todoId,
+        id: todoId,
         user_id: user.id,
       },
     });
@@ -67,10 +83,19 @@ export default class Todocontroller {
     return okRes(res, `Todo removed successfully`);
   };
 
+  /**
+   *
+   * This function adds a todo
+   *
+   * @requires updated_status
+   *
+   * @returns the updated todo
+   */
+
   static updateTodo = async (req, res) => {
     let user = req.user;
     let body = req.body;
-
+    let todoId = parseInt(req.params.todoId);
     //Validating request data
     let notValid = validate(body, validator.updateTodo());
     if (notValid) return errRes(res, notValid);
@@ -78,7 +103,7 @@ export default class Todocontroller {
     //check if todo exists and belongs to user
     let task = await prisma.todo.findFirst({
       where: {
-        id: body.todoId,
+        id: todoId,
         user_id: user.id,
       },
     });
@@ -98,7 +123,7 @@ export default class Todocontroller {
       .then(async () => {
         task = await prisma.todo.findFirst({
           where: {
-            id: body.todoId,
+            id: todoId,
             user_id: user.id,
           },
         });

@@ -13,6 +13,17 @@ import { PrismaClient, Prisma } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default class UserController {
+  /**
+   *
+   * This function adds a todo
+   *
+   * @requires unique_username
+   *
+   * @requires password
+   *
+   * @returns the created user
+   */
+
   static register = async (req, res) => {
     //Check the req data validity
     let body = req.body;

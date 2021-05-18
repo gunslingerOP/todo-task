@@ -32,18 +32,7 @@ export default class validator {
     },
   });
 
-  static removeTodo = (must = true) => ({
-    todoId: {
-      presence: must,
-      type: "number",
-    },
-  });
-
   static updateTodo = (must = true) => ({
-    todoId: {
-      presence: must,
-      type: "number",
-    },
     newStatus: {
       presence: must,
       type: "string",

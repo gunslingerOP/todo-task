@@ -6,6 +6,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default class DataController {
+  /**
+   *
+   * This function gets the user's todos
+   *
+   *
+   */
+
   static getUserTodos = async (req, res) => {
     //Getting user and body from req
     let user = req.user;
@@ -18,7 +25,7 @@ export default class DataController {
       },
     });
 
-    if (JSON.stringify(todos) === "{}") {
+    if (Object.keys(todos).length == 0) {
       return errRes(
         res,
         `You have no todos, time to get busy and create some!`
@@ -27,6 +34,13 @@ export default class DataController {
 
     return okRes(res, todos);
   };
+
+  /**
+   *
+   * This function gets the categories to which the user can assign todos
+   *
+   * @returns categories paginated
+   */
 
   static getCategories = async (req, res) => {
     let { p, s } = req.query;
@@ -41,16 +55,21 @@ export default class DataController {
     return okRes(res, { categories, p, s });
   };
 
+  /**
+   *
+   * This function gets user todos according to a given category
+   *
+   * @requires categoryId
+   *
+   * @returns categories paginated
+   */
+
   static filterByCategory = async (req, res) => {
     let user = req.user;
     let categoryId = parseInt(req.params.categoryId);
     let { p, s } = req.query;
 
     let { skip, take } = paginate(p, s);
-
-    //validate the filter categoryId
-    if (!categoryId)
-      return errRes(res, `Please enter a categoryId in the params`);
 
     //check if category exists
     let category = await prisma.category.findUnique({

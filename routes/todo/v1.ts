@@ -4,8 +4,8 @@ import userAuth from "../../middleware/userAuth";
 
 const router = express.Router();
 
-router.post("/add", userAuth, Todocontroller.addTodo);
-router.delete("/delete", userAuth, Todocontroller.removeTodo);
-router.put("/update", userAuth, Todocontroller.updateTodo);
+router.post("/todos", userAuth, Todocontroller.addTodo);
+router.delete("/todos/:todoId", userAuth, Todocontroller.removeTodo);
+router.put("/todos/:todoId", userAuth, Todocontroller.updateTodo);
 
 export default router;
