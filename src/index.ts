@@ -4,7 +4,7 @@ import userV1 from "../routes/user/v1";
 import todoV1 from "../routes/todo/v1";
 import dataV1 from "../routes/data/v1";
 
-let port = 3000;
+let port = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors());
